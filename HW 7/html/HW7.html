@@ -1,0 +1,256 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>RAHUL GOYAL HW7</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-11-28"><meta name="DC.source" content="HW7.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>RAHUL GOYAL HW7</h1><!--introduction--><p>The objective of this assignment is to set up a program to solve the tapered beam problem presented below. The task is to derive the exact solution and look at how the finite element solution converges to the exact solution as the number of elements is increased.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reset</a></li><li><a href="#2">Constants / Given Values</a></li><li><a href="#3">Exact Solution</a></li><li><a href="#4">Finite Element Analysis</a></li><li><a href="#5">FEA Percent Error vs. Number of Elements</a></li></ul></div><h2 id="1">Reset</h2><pre class="codeinput">close <span class="string">all</span>;
+clear <span class="string">all</span>;
+clc;
+</pre><h2 id="2">Constants / Given Values</h2><pre class="codeinput">b = 3;                          <span class="comment">% Base (in)</span>
+t = 0.1;                        <span class="comment">% Thickness (in)</span>
+L = 10;                         <span class="comment">% Length (in)</span>
+P = 1000;                       <span class="comment">% Force (lb)</span>
+E = 30*10^6;                    <span class="comment">% Young's Modulus (psi)</span>
+
+a = 0.2:0.2:1.0;                <span class="comment">% Solve with a = [0.2, 0.4, 0.6, 0.8, 1.0]</span>
+elements = 1:20;                <span class="comment">% Solve with elements = [1, 2, ..., 20]</span>
+</pre><h2 id="3">Exact Solution</h2><pre class="codeinput"><span class="comment">% Create empty delta matrix</span>
+delta_exact = zeros(length(a), 1);
+
+<span class="comment">% Loop: a = [0.2, 0.4, 0.6, 0.8, 1.0]</span>
+<span class="keyword">for</span> a_i = a
+    <span class="comment">% Store beam displacement for given a</span>
+    delta_exact(int8(a_i*5)) = P*L/(E*b*t) * log(L/a_i);
+<span class="keyword">end</span>
+</pre><h2 id="4">Finite Element Analysis</h2><pre class="codeinput"><span class="comment">% Create empty delta matrix</span>
+delta_FEA = zeros(length(a), length(elements));
+
+<span class="comment">% Loop: a = [0.2, 0.4, 0.6, 0.8, 1.0]</span>
+<span class="keyword">for</span> a_i = a
+    <span class="comment">% Loop: elements = [1, 2, ..., 20]</span>
+    <span class="keyword">for</span> e_i = elements
+
+        <span class="comment">% Create the Elemental Stiffness Matrices</span>
+        k_i = zeros(e_i, 2, 2);         <span class="comment">% Create empty elemental matrices</span>
+        L_i = (L-a_i) / e_i;            <span class="comment">% Element length (in) [constant]</span>
+        <span class="keyword">for</span> i = e_i:-1:1                <span class="comment">% Loop: i = [elements, ..., 2, 1]</span>
+            <span class="comment">% Elemental average area (in^2)</span>
+            A_i = b * t/L*(a_i + i*L_i - L_i/2);
+            <span class="comment">% Elemental stiffness matrix (lb/in)</span>
+            k_i(1+(e_i-i), :, :) = [A_i*E/L_i, -A_i*E/L_i;
+                                           -A_i*E/L_i, A_i*E/L_i];
+        <span class="keyword">end</span>
+
+        <span class="comment">% Combine Elemental Stiffness Matrices</span>
+        k = zeros(e_i+1);               <span class="comment">% Create empty global stiffness matrix</span>
+        <span class="keyword">for</span> i = 1:e_i                   <span class="comment">% Loop: i = [1, 2, ..., elements]</span>
+            <span class="comment">% Add elemental matrix in correct position to global matrix</span>
+            k(i:i+1, i:i+1) = k(i:i+1, i:i+1) + squeeze(k_i(i, :, :));
+        <span class="keyword">end</span>
+
+        <span class="comment">% Reduce Global Stiffness Matrix</span>
+        k = k(2:e_i+1, 2:e_i+1);        <span class="comment">% Delete first row and column</span>
+
+        <span class="comment">% Form Force Vector</span>
+        F = zeros(e_i, 1);              <span class="comment">% Create empty force vector</span>
+        F(e_i) = P;                     <span class="comment">% Set force on last element to P</span>
+
+        <span class="comment">% Invert Global Stiffness Matrix</span>
+        k_inv = inv(k);                 <span class="comment">% Invert global stiffnes matrix</span>
+
+        <span class="comment">% Solve for Displacement Vector</span>
+        delta_i = k_inv*F;              <span class="comment">% Displacement of each element</span>
+        <span class="comment">% Store beam displacement for given a and number of elements</span>
+        delta_FEA(int8(a_i*5), e_i) = delta_i(end);
+
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><h2 id="5">FEA Percent Error vs. Number of Elements</h2><pre class="codeinput"><span class="comment">% Create empty error matrix</span>
+error = zeros(length(a), length(elements));
+
+<span class="comment">% Loop: a = [0.2, 0.4, 0.6, 0.8, 1.0]</span>
+<span class="keyword">for</span> a_i = a
+    i_a = int8(a_i*5);          <span class="comment">% Convert a_i to iteration number</span>
+    <span class="comment">% Store relative error for given a</span>
+    error(i_a, :) = (delta_FEA(i_a, :) - delta_exact(i_a))/delta_exact(i_a);
+<span class="keyword">end</span>
+
+<span class="comment">% Plot</span>
+plot(elements, abs(error*100), <span class="string">'LineWidth'</span>, 2)
+title(<span class="string">'FEA Percent Error vs. Number of Elements'</span>);
+xlabel(<span class="string">'Number of Elements'</span>);
+ylabel(<span class="string">'FEA Percent Error (%)'</span>);
+legend(<span class="string">'a = 0.2'</span>, <span class="string">'a = 0.4'</span>, <span class="string">'a = 0.6'</span>, <span class="string">'a = 0.8'</span>, <span class="string">'a = 1.0'</span>);
+</pre><img vspace="5" hspace="5" src="HW7_01.png" style="width:560px;height:420px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% RAHUL GOYAL HW7
+% The objective of this assignment is to set up a program to solve the
+% tapered beam problem presented below. The task is to derive the exact
+% solution and look at how the finite element solution converges to the
+% exact solution as the number of elements is increased.
+
+
+%% Reset
+close all;
+clear all;
+clc;
+
+
+
+%% Constants / Given Values
+
+b = 3;                          % Base (in)
+t = 0.1;                        % Thickness (in)
+L = 10;                         % Length (in)
+P = 1000;                       % Force (lb)
+E = 30*10^6;                    % Young's Modulus (psi)
+
+a = 0.2:0.2:1.0;                % Solve with a = [0.2, 0.4, 0.6, 0.8, 1.0]
+elements = 1:20;                % Solve with elements = [1, 2, ..., 20]
+
+
+
+%% Exact Solution
+
+% Create empty delta matrix
+delta_exact = zeros(length(a), 1);
+
+% Loop: a = [0.2, 0.4, 0.6, 0.8, 1.0]
+for a_i = a
+    % Store beam displacement for given a
+    delta_exact(int8(a_i*5)) = P*L/(E*b*t) * log(L/a_i);
+end
+
+
+
+%% Finite Element Analysis
+
+% Create empty delta matrix
+delta_FEA = zeros(length(a), length(elements));
+
+% Loop: a = [0.2, 0.4, 0.6, 0.8, 1.0]
+for a_i = a
+    % Loop: elements = [1, 2, ..., 20]
+    for e_i = elements
+
+        % Create the Elemental Stiffness Matrices
+        k_i = zeros(e_i, 2, 2);         % Create empty elemental matrices
+        L_i = (L-a_i) / e_i;            % Element length (in) [constant]
+        for i = e_i:-1:1                % Loop: i = [elements, ..., 2, 1]
+            % Elemental average area (in^2)
+            A_i = b * t/L*(a_i + i*L_i - L_i/2);
+            % Elemental stiffness matrix (lb/in)
+            k_i(1+(e_i-i), :, :) = [A_i*E/L_i, -A_i*E/L_i;
+                                           -A_i*E/L_i, A_i*E/L_i];
+        end
+
+        % Combine Elemental Stiffness Matrices
+        k = zeros(e_i+1);               % Create empty global stiffness matrix
+        for i = 1:e_i                   % Loop: i = [1, 2, ..., elements]
+            % Add elemental matrix in correct position to global matrix
+            k(i:i+1, i:i+1) = k(i:i+1, i:i+1) + squeeze(k_i(i, :, :));
+        end
+
+        % Reduce Global Stiffness Matrix
+        k = k(2:e_i+1, 2:e_i+1);        % Delete first row and column
+
+        % Form Force Vector
+        F = zeros(e_i, 1);              % Create empty force vector
+        F(e_i) = P;                     % Set force on last element to P
+
+        % Invert Global Stiffness Matrix
+        k_inv = inv(k);                 % Invert global stiffnes matrix
+
+        % Solve for Displacement Vector
+        delta_i = k_inv*F;              % Displacement of each element
+        % Store beam displacement for given a and number of elements
+        delta_FEA(int8(a_i*5), e_i) = delta_i(end);
+
+    end
+end
+
+
+
+%% FEA Percent Error vs. Number of Elements
+
+% Create empty error matrix
+error = zeros(length(a), length(elements));
+
+% Loop: a = [0.2, 0.4, 0.6, 0.8, 1.0]
+for a_i = a
+    i_a = int8(a_i*5);          % Convert a_i to iteration number
+    % Store relative error for given a
+    error(i_a, :) = (delta_FEA(i_a, :) - delta_exact(i_a))/delta_exact(i_a);
+end
+
+% Plot
+plot(elements, abs(error*100), 'LineWidth', 2)
+title('FEA Percent Error vs. Number of Elements');
+xlabel('Number of Elements');
+ylabel('FEA Percent Error (%)');
+legend('a = 0.2', 'a = 0.4', 'a = 0.6', 'a = 0.8', 'a = 1.0');
+##### SOURCE END #####
+--></body></html>

@@ -27,7 +27,7 @@ elements = 1:20;                % Solve with elements = [1, 2, ..., 20]
 
 %% Exact Solution
 
-% Create empty delta vector
+% Create empty delta matrix
 delta_exact = zeros(length(a), 1);
 
 % Loop: a = [0.2, 0.4, 0.6, 0.8, 1.0]
@@ -40,7 +40,7 @@ end
 
 %% Finite Element Analysis
 
-% Create empty delta vector
+% Create empty delta matrix
 delta_FEA = zeros(length(a), length(elements));
 
 % Loop: a = [0.2, 0.4, 0.6, 0.8, 1.0]
@@ -88,7 +88,7 @@ end
 
 %% FEA Percent Error vs. Number of Elements
 
-% Create empty error vector
+% Create empty error matrix
 error = zeros(length(a), length(elements));
 
 % Loop: a = [0.2, 0.4, 0.6, 0.8, 1.0]
@@ -103,4 +103,4 @@ plot(elements, abs(error*100), 'LineWidth', 2)
 title('FEA Percent Error vs. Number of Elements');
 xlabel('Number of Elements');
 ylabel('FEA Percent Error (%)');
-legend('a = 1', 'a = 2', 'a = 3', 'a = 4', 'a = 5');
+legend('a = 0.2', 'a = 0.4', 'a = 0.6', 'a = 0.8', 'a = 1.0');
