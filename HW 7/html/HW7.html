@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>RAHUL GOYAL HW7</h1><!--introduction--><p>The objective of this assignment is to set up a program to solve the tapered beam problem presented below. The task is to derive the exact solution and look at how the finite element solution converges to the exact solution as the number of elements is increased.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reset</a></li><li><a href="#2">Constants / Given Values</a></li><li><a href="#3">Exact Solution</a></li><li><a href="#4">Finite Element Analysis</a></li><li><a href="#5">FEA Percent Error vs. Number of Elements</a></li></ul></div><h2 id="1">Reset</h2><pre class="codeinput">close <span class="string">all</span>;
+  </style></head><body><div class="content"><h1>RAHUL GOYAL HW7</h1><!--introduction--><p>ME 328 Fall 2018 - Homework Assignment #7</p><p><b>Author:</b> RAHUL GOYAL</p><p>California Polytechnic State University, San Luis Obispo, CA</p><p><b>Date Created:</b> November 26, 2018</p><p><b>Date Modified:</b> November 28, 2018</p><p><b>Description:</b> The objective of this assignment is to set up a program to solve the tapered beam problem presented below. The task is to derive the exact solution and look at how the finite element solution converges to the exact solution as the number of elements is increased.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Reset</a></li><li><a href="#2">Constants / Given Values</a></li><li><a href="#3">Exact Solution</a></li><li><a href="#4">Finite Element Analysis</a></li><li><a href="#5">FEA Percent Error vs. Number of Elements</a></li></ul></div><h2 id="1">Reset</h2><pre class="codeinput">close <span class="string">all</span>;
 clear <span class="string">all</span>;
 clc;
 </pre><h2 id="2">Constants / Given Values</h2><pre class="codeinput">b = 3;                          <span class="comment">% Base (in)</span>
@@ -150,6 +150,17 @@ legend(<span class="string">'a = 0.2'</span>, <span class="string">'a = 0.4'</sp
 </pre><img vspace="5" hspace="5" src="HW7_01.png" style="width:560px;height:420px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% RAHUL GOYAL HW7
+% ME 328 Fall 2018 - Homework Assignment #7
+%
+% *Author:* RAHUL GOYAL
+%
+% California Polytechnic State University, San Luis Obispo, CA
+%
+% *Date Created:* November 26, 2018
+%
+% *Date Modified:* November 28, 2018
+%
+% *Description:*
 % The objective of this assignment is to set up a program to solve the
 % tapered beam problem presented below. The task is to derive the exact
 % solution and look at how the finite element solution converges to the

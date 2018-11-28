@@ -1,4 +1,15 @@
 %% RAHUL GOYAL HW7
+% ME 328 Fall 2018 - Homework Assignment #7
+%
+% *Author:* RAHUL GOYAL
+%
+% California Polytechnic State University, San Luis Obispo, CA
+%
+% *Date Created:* November 26, 2018
+%
+% *Date Modified:* November 28, 2018
+%
+% *Description:*
 % The objective of this assignment is to set up a program to solve the
 % tapered beam problem presented below. The task is to derive the exact
 % solution and look at how the finite element solution converges to the
