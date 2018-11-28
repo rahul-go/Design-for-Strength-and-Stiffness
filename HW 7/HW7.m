@@ -101,6 +101,9 @@ end
 % Plot
 plot(elements, abs(error*100), 'LineWidth', 2)
 title('FEA Percent Error vs. Number of Elements');
-xlabel('Number of Elements');
+xlabel({'Number of Elements'
+        ''
+        % Figure label
+        '\bfFigure 1: \rmFEA Percent Error vs. Number of Elements'});
 ylabel('FEA Percent Error (%)');
 legend('a = 0.2', 'a = 0.4', 'a = 0.6', 'a = 0.8', 'a = 1.0');

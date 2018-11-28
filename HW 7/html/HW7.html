@@ -141,7 +141,10 @@ error = zeros(length(a), length(elements));
 <span class="comment">% Plot</span>
 plot(elements, abs(error*100), <span class="string">'LineWidth'</span>, 2)
 title(<span class="string">'FEA Percent Error vs. Number of Elements'</span>);
-xlabel(<span class="string">'Number of Elements'</span>);
+xlabel({<span class="string">'Number of Elements'</span>
+        <span class="string">''</span>
+        <span class="comment">% Figure label</span>
+        <span class="string">'\bfFigure 1: \rmFEA Percent Error vs. Number of Elements'</span>});
 ylabel(<span class="string">'FEA Percent Error (%)'</span>);
 legend(<span class="string">'a = 0.2'</span>, <span class="string">'a = 0.4'</span>, <span class="string">'a = 0.6'</span>, <span class="string">'a = 0.8'</span>, <span class="string">'a = 1.0'</span>);
 </pre><img vspace="5" hspace="5" src="HW7_01.png" style="width:560px;height:420px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
@@ -249,7 +252,10 @@ end
 % Plot
 plot(elements, abs(error*100), 'LineWidth', 2)
 title('FEA Percent Error vs. Number of Elements');
-xlabel('Number of Elements');
+xlabel({'Number of Elements'
+        ''
+        % Figure label
+        '\bfFigure 1: \rmFEA Percent Error vs. Number of Elements'});
 ylabel('FEA Percent Error (%)');
 legend('a = 0.2', 'a = 0.4', 'a = 0.6', 'a = 0.8', 'a = 1.0');
 ##### SOURCE END #####
