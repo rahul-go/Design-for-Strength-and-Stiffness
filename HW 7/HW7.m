@@ -1,4 +1,4 @@
-%% RAHUL GOYAL HW7
+%% RAHUL GOYAL HW 7
 % ME 328 Fall 2018 - Homework Assignment #7
 %
 % *Author:* RAHUL GOYAL
