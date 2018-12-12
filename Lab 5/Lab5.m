@@ -100,6 +100,9 @@ for i = 1:length(D_d)
         r = r_d(j) * d;
         
         % Stress Concentration Factor
+        % https://www.amesweb.info/
+        % StressConcentrationFactor/SteppedShaftWithShoulderFillet.aspx
+        
         % Bending
         if (0.1 <= h/r) && (h/r <= 2.0)
             C_1 =  0.947 + 1.206*sqrt(h/r) - 0.131*h/r;
