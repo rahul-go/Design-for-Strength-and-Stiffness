@@ -26,18 +26,20 @@ clc;
 
 %% Constants / Given Values
 
+% Ratios of larger diameter to smaller diameter
 D_d = [1.25, 1.5, 1.75, 2.0, 2.25, 2.5];
+% Ratios of radius to smaller diameter
 r_d = [0.05, 0.10, 0.15, 0.20];
 
 
 
 %% Input Parameters
 
-D = 3;                          %
-L = 5;                          %
-a = 10;                         % 
-P_a = 0.75;                     % (kips)
-P_m = 1.5;                      % (kips)
+D = 3;                          % Larger diameter (in)
+L = 5;                          % Shaft length (in)
+a = 10;                         % Lever length (in)
+P_a = 0.75;                     % Alternating force (kips)
+P_m = 1.5;                      % Mean force (kips)
 
 S_ut = 210;                     % Strength, ultimate (ksi)
 S_y  = 180;                     % Strength, yield (ksi)
@@ -50,9 +52,9 @@ k_a = 2.70*S_ut^-0.265;         % Surface Factor (machined)
 %% Analysis
 
 % Create factor of safety matrix
-FOS = zeros(length(D_d), length(r_d));
+FoS = zeros(length(D_d), length(r_d));
 
-S_ep = S_ut / 2;                % Endurance Limit Prime
+S_ep = S_ut / 2;                % Endurance Limit Prime (ksi)
 if S_ep > 100
     S_ep = 100;
 end
@@ -62,7 +64,8 @@ k_d = 1;                        % Temperature Factor
 k_e = 1;                        % Reliability Factor
 
 for i = 1:length(D_d)
-    d = D / D_d(i);
+    
+    d = D / D_d(i);                 % Smaller diameter (in)
     
     % Size Factor (k_b)
     if (0.11 <= d) && (d <= 2)
@@ -75,29 +78,29 @@ for i = 1:length(D_d)
         disp("The stepped-down diameter is: " + d);
     end
     
-    % Enduance Limit
+    % Enduance Limit (ksi)
     S_e = S_ep * k_a * k_b * k_c * k_d * k_e;
     
-    % Alternating Stress
-    % Stress from Bending (M * c / I)
+    % Alternating Stresses (ksi)
+    % Stress from Bending [M * c / I] (ksi)
     sigma_a = (P_a*L) * (d/2) / (pi/4*(d/2)^4);
-    % Stress from Torsion (T * r / J)
+    % Stress from Torsion [T * r / J] (ksi)
     tau_a = (P_a*a) * (d/2) / (pi/2*(d/2)^4);
-    % Alternating Stress Prime
+    % Alternating Stress Prime (ksi)
     % Changes with notch radius, calculated below.
 
-    % Mean Stress
-    % Stress from Bending (M * c / I)
+    % Mean Stresses (ksi)
+    % Stress from Bending ]M * c / I] (ksi)
     sigma_m = (P_m*L) * (d/2) / (pi/4*(d/2)^4);
-    % Stress from Torsion (T * r / J)
+    % Stress from Torsion [T * r / J] (ksi)
     tau_m = (P_m*a) * (d/2) / (pi/2*(d/2)^4);
-    % Mean Stress Prime
+    % Mean Stress Prime (ksi)
     sigma_mp = sqrt(sigma_m^2 + 3*tau_m^2);
     
     % Miscellaneous Factors (k_f)
-    h = (D - d) / 2;
+    h = (D - d) / 2;                % Step height (in)   
     for j = 1:length(r_d)
-        r = r_d(j) * d;
+        r = r_d(j) * d;                 % Notch radius (in)
         
         % Stress Concentration Factor
         % https://www.amesweb.info/
@@ -159,27 +162,33 @@ for i = 1:length(D_d)
             k_fs = 0;
         end
         
-        % Alternating Stress Prime
+        % Alternating Stress Prime (ksi)
         sigma_ap = sqrt((k_f*sigma_a)^2 + 3*(k_fs*tau_a)^2);
         
         % Factor of Safety (Modified Goodman)
         if k_b && k_f && k_fs
-            FOS_MG = (sigma_ap/S_e + sigma_mp/S_ut)^-1;
+            FoS_MG = (sigma_ap/S_e + sigma_mp/S_ut)^-1;
         else
-            FOS_MG = 0;
+            FoS_MG = 0;
         end
         
         % Factor of Safety (Langer Static Yield)
-        FOS_LSY = S_y / (sigma_ap + sigma_mp);
+        FoS_LSY = S_y / (sigma_ap + sigma_mp);
         
         % Factor of Safety
-        FOS(i, j) = min(FOS_MG, FOS_LSY);
-        if ~FOS(i, j)
-            FOS(i, j) = NaN;
+        FoS(i, j) = min(FoS_MG, FoS_LSY);
+        if ~FoS(i, j)
+            FoS(i, j) = NaN;
         end
         
     end
 end
 
 % Plot
-plot(r_d, FOS, 'LineWidth', 2);
+plot(r_d, FoS, 'LineWidth', 2);
+title("Factor of Safety vs. Radius to Smaller Diameter Ratio (No Extrapolations)");
+xlabel({'Ratio of Radius to Smaller Diameter'
+        ''
+        % Figure label
+        '\bfFigure 1: \rmFoS vs. Radius to Smaller Diameter Ratio (No Extrapolations)'});
+ylabel("Factor of Safety");
